@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diet Recall App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 75vh;
+            background-image: url('images/s2.webp');
+            background-size: cover; 
+            background-position: center center; 
+            background-repeat: no-repeat; 
+        }
+
+        #appContainer {
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            max-width: 500px;
+            margin: 60px auto;
+            padding: 50px;
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-image: url('images/c2.jpg');
+            background-size: cover; 
+            background-position: center center; 
+            background-repeat: no-repeat; 
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-bottom: 0.7em;
+        }
+
+        input {
+            margin-bottom: 1em;
+            padding: 0.6em;
+        }
+
+        button {
+            padding: 0.5em;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        #dietEntryForm {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #dietEntryForm div {
+            margin-bottom: 10px;
+        }
+
+        #timing {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="appContainer">
+        <h1>DIET CONTROL APP</h1>
+
+        <!-- Login Form -->
+        <div id="loginModule">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <button type="button" onclick="login()">Login</button>
+            </form>
+        </div>
+
+        <!-- Diet Entry Form -->
+        <div id="dietEntryForm" style="display: none;">
+            <h2>Diet Entry</h2>
+
+            <!-- Meal Input -->
+            <div>
+                <label for="meal">Meal:</label>
+                <input type="text" id="meal" placeholder="Enter your meal">
+            </div>
+
+            <!-- Calories Input -->
+            <div>
+                <label for="calories">Calories:</label>
+                <input type="number" id="calories" placeholder="Enter calories">
+            </div>
+
+            <!-- Add Meal Button -->
+            <button onclick="addMeal()">Add Meal</button>
+
+            <!-- View Meal Summary Button -->
+            <button onclick="viewSummary()">View Meal Summary</button>
+
+            <h2>Meal List</h2>
+            <ul id="mealList"></ul>
+
+            <div id="timing"></div>
+        </div>
+    </div>
+
+    <script>
+        var user = {
+            username: 'diet',
+            password: '12345'
+        };
+
+        var loginCount = 0;
+        var meals = []; // Array to store meal data
+
+        function login() {
+            var usernameInput = document.getElementById('username').value;
+            var passwordInput = document.getElementById('password').value;
+
+            if (usernameInput === user.username && passwordInput === user.password) {
+                loginCount++;
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('dietEntryForm').style.display = 'block';
+            } else {
+                alert('Invalid username or password. Please try again.');
+            }
+        }
+
+        function addMeal() {
+            var mealInput = document.getElementById('meal');
+            var caloriesInput = document.getElementById('calories');
+            var mealList = document.getElementById('mealList');
+            var timingDiv = document.getElementById('timing');
+
+            var meal = mealInput.value;
+            var calories = caloriesInput.value;
+
+            if (meal !== '' && calories !== '') {
+                var listItem = document.createElement('li');
+                listItem.textContent = meal + ': ' + calories + ' calories';
+                mealList.appendChild(listItem);
+
+                // Add meal data to the array
+                meals.push({ meal: meal, calories: calories });
+
+                // Display current time
+                var currentTime = new Date();
+                var hours = currentTime.getHours();
+                var minutes = currentTime.getMinutes() < 10 ? '0' + currentTime.getMinutes() : currentTime.getMinutes();
+                timingDiv.textContent = 'Last Entry Time: ' + hours + ':' + minutes;
+            }
+
+            mealInput.value = '';
+            caloriesInput.value = '';
+        }
+
+        function viewSummary() {
+            // Pass meal data to the summary page using URL parameter
+            window.location.href = 'meal-summary.html?mealData=' + encodeURIComponent(JSON.stringify(meals));
+        }
+    </script>
+
+</body>
+</html>
+
+
+

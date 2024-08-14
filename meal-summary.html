@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Summary</title>
+    <style>
+        /* Your styles for the summary page */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Meal Summary</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Meal</th>
+                <th>Calories</th>
+            </tr>
+        </thead>
+        <tbody id="mealSummaryTableBody"></tbody>
+    </table>
+
+    <script>
+        // Retrieve meal data from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const mealData = JSON.parse(urlParams.get('mealData'));
+
+        // Display meal data in the table
+        const mealSummaryTableBody = document.getElementById('mealSummaryTableBody');
+
+        mealData.forEach(meal => {
+            const row = document.createElement('tr');
+            const mealCell = document.createElement('td');
+            const caloriesCell = document.createElement('td');
+
+            mealCell.textContent = meal.meal;
+            caloriesCell.textContent = meal.calories;
+
+            row.appendChild(mealCell);
+            row.appendChild(caloriesCell);
+
+            mealSummaryTableBody.appendChild(row);
+        });
+    </script>
+</body>
+</html>
